@@ -54,9 +54,9 @@ function createProductItemElement({ id: sku, title: name, thumbnail: image }) {
   return items.appendChild(section);
 }
 
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
+// function getSkuFromProductItem(item) {
+//   return item.querySelector('span.item__sku').innerText;
+// }
 
 async function addScreen() {
   const { results } = await fetchProducts('computador');
