@@ -1,4 +1,11 @@
 const cartItems = document.querySelector('.cart__items');
+const classTotalPrice = document.querySelector('.total-price');
+let totalPrice = 0;
+
+function updatePrice(price) {
+  classTotalPrice.innerHTML = price;
+  localStorage.setItem('value', price);
+}
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -15,6 +22,10 @@ function createCustomElement(element, className, innerText) {
 }
 
 function cartItemClickListener(event) {
+  const capturePrice = Number(event.target.dataset.cartPrice);
+  const getTotalPrice = localStorage.getItem('value');
+  totalPrice = getTotalPrice - capturePrice;
+  updatePrice(totalPrice);
   event.target.remove();
   saveCartItems(cartItems.innerHTML);
 }
@@ -28,9 +39,12 @@ function clearListCart() {
 clearListCart();
 
 function createCartItemElement({ id: sku, title: name, price: salePrice }) {
+  totalPrice = Number(localStorage.getItem('value')) + salePrice;
+  updatePrice(totalPrice);
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.dataset.cartPrice = salePrice;
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
@@ -70,4 +84,8 @@ window.onload = () => {
   cartItems.innerHTML = getSavedCartItems();
   const cartListItems = document.querySelectorAll('.cart__item');
   cartListItems.forEach((items) => items.addEventListener('click', cartItemClickListener));
+  const getTotalPrice = localStorage.getItem('value');
+  classTotalPrice.innerHTML = getTotalPrice;
 };
+
+// Auxiliado por Willian ALves - Turma 17
